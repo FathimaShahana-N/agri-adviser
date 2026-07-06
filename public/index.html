@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AgriAdvisor</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>AgriAdvisor</h1>
+    <p class="subtitle">Ask about a sick crop &mdash; describe it or upload a photo</p>
+  </header>
+
+  <main>
+    <section id="chat" aria-live="polite"></section>
+
+    <form id="chat-form">
+      <textarea id="text-input" placeholder="Describe the problem (any supported language: English, Malayalam, Hindi, Spanish, Swahili, French, Bengali)"></textarea>
+      <div class="form-row">
+        <label class="file-label">
+          <input type="file" id="image-input" accept="image/png, image/jpeg, image/webp" />
+          <span id="file-name">Attach photo</span>
+        </label>
+        <input type="text" id="location-input" placeholder="Location (optional, e.g. town name)" />
+        <button type="submit">Send</button>
+      </div>
+
+      <!-- Optional preventive-tips selectors - independent of the photo/text/
+           location inputs above. Leaving both on "None" changes nothing. -->
+      <div class="form-row form-row-secondary">
+        <label class="selector-label">
+          Preventive tip:
+          <select id="crop-select">
+            <option value="">Crop (optional)</option>
+            <option value="rice">Rice</option>
+            <option value="maize">Maize</option>
+            <option value="tomato">Tomato</option>
+            <option value="potato">Potato</option>
+            <option value="pepper">Pepper</option>
+          </select>
+        </label>
+        <select id="growth-stage-select">
+          <option value="">Growth stage (optional)</option>
+          <option value="seedling">Seedling</option>
+          <option value="vegetative">Vegetative/Growing</option>
+          <option value="flowering">Flowering</option>
+          <option value="fruiting">Fruiting/Harvest</option>
+        </select>
+      </div>
+    </form>
+
+    <details id="trace-panel">
+      <summary>Agent reasoning trace (demo/debug view)</summary>
+      <pre id="trace-output"></pre>
+    </details>
+  </main>
+
+  <script src="chat.js"></script>
+</body>
+</html>
