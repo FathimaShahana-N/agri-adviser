@@ -85,7 +85,7 @@ Session state (detected language, in-progress diagnosis awaiting follow-up answe
 
 ```bash
 # 1. Clone the repository
-git clone <repository-url>
+git clone https://github.com/FathimaShahana-N/agri-adviser.git
 cd agri-adviser
 
 # 2. Install dependencies
