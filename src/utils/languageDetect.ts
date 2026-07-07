@@ -87,6 +87,15 @@ export interface LanguageDetection {
   source: "text-script" | "text-stopwords" | "text-statistical" | "default-fallback";
 }
 
+// A single matching stopword is not enough to conclude a language: common
+// short words collide across languages (English "No" is also a valid
+// Spanish word), so a lone match on a one-word reply would otherwise flip
+// detection incorrectly. Requiring 2+ distinct matches also floors the
+// confidence formula below at MIN_STOPWORD_CONFIDENCE by construction
+// (0.6 + 2*0.1 = 0.8), so both requirements are enforced by one check.
+const MIN_STOPWORD_MATCHES = 2;
+const MIN_STOPWORD_CONFIDENCE = 0.8;
+
 // Detects the farmer's language from free text, restricted to the app's
 // supported set. Falls back to English with low confidence when the text
 // is too short/ambiguous for any detector to be sure.
@@ -98,10 +107,10 @@ export function detectLanguageFromText(text: string): LanguageDetection {
   }
 
   const stopwordResult = scoreStopwords(text);
-  if (stopwordResult && stopwordResult.score >= 1) {
+  if (stopwordResult && stopwordResult.score >= MIN_STOPWORD_MATCHES) {
     return {
       language: SUPPORTED_LANGUAGES[stopwordResult.code],
-      confidence: Math.min(0.6 + stopwordResult.score * 0.1, 0.9),
+      confidence: Math.max(MIN_STOPWORD_CONFIDENCE, Math.min(0.6 + stopwordResult.score * 0.1, 0.9)),
       source: "text-stopwords",
     };
   }
